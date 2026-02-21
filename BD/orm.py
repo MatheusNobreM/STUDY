@@ -45,4 +45,18 @@ def atualiza_filme(id, nome=None, ano=None, nota=None):
     session.close()
 
 
-atualiza_filme(1, "Homem de ferro", 2013, 9)
+# atualiza_filme(1, "Homem de ferro", 2013, 9)
+
+
+def exclui_filme(id):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    filme = session.query(Filme).filter_by(id=id).first()
+    if filme:
+        session.delete(filme)
+        session.commit()
+
+    session.close()
+
+
+exclui_filme(2)
