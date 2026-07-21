@@ -47,5 +47,5 @@ async def atualiza_jogador(jogador_id, jogador: Jogador):
 @jogador_router.delete("/jogadores/{jogador_id}")
 async def exclui_jogador(jogador_id):
     return jogadorEntidade(
-        conexao.local.jogador.find_one({"_id": ObjectId(jogador_id)})
+        conexao.local.jogador.find_one_and_delete({"_id": ObjectId(jogador_id)})
     )
