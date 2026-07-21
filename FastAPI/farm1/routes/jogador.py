@@ -12,6 +12,7 @@ async def inicio():
     return "Bem vindo ao FullStack Farm"
 
 
+# Lista de todos os jogadores
 @jogador_router.get("/jogadores")
 async def lista_jogadores():
     return listaJogadoresEntidade(conexao.local.jogador.find())
@@ -24,12 +25,14 @@ async def busca_jogador_id(jogador_id):
     )
 
 
+# Insere novos Jogadores
 @jogador_router.post("/jogadores")
 async def cadastra_jogadores(jogador: Jogador):
     conexao.local.jogador.insert_one(dict(jogador))
     return listaJogadoresEntidade(conexao.local.jogador.find())
 
 
+# Atualizar Jogador
 @jogador_router.put("/jogadores/{jogadores_id}")
 async def atualiza_jogador(jogador_id, jogador: Jogador):
     conexao.local.jogador.find_one_and_update(
@@ -40,6 +43,7 @@ async def atualiza_jogador(jogador_id, jogador: Jogador):
     )
 
 
+# Deleta Jogador
 @jogador_router.delete("/jogadores/{jogador_id}")
 async def exclui_jogador(jogador_id):
     return jogadorEntidade(
