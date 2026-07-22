@@ -12,24 +12,20 @@ function App() {
   useEffect(() => {
     axios
       .get("http://127.0.0.1:8000/jogadores")
-      .then((resposta) => {
-        console.log(resposta.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
+      .then((resposta) => console.log(resposta.data))
+      .catch((error) => console.log(error));
+  }, []);
 
   const adicionaJogador = () => {
     const jogador = {
-      jogador_name: jogadorNome,
-      jogador_idade: jogadorIdade,
+      jogador_nome: jogadorNome,
+      jogador_idade: Number(jogadorIdade),
       jogador_time: jogadorTime,
     };
     axios
-      .post("http://127.0.0.1:800/jogadores", jogador)
+      .post("http://127.0.0.1:8000/jogadores", jogador)
       .then((resposta) => {
-        alert(resposta);
+        alert(JSON.stringify(resposta.data));
       })
       .catch((error) => {
         console.log(error);
@@ -53,18 +49,26 @@ function App() {
           </h5>
           <span className="card-text">
             <input
+              onChange={(evento) => setJogadorNome(evento.target.value)}
               className="mb-2 form-control"
               placeholder="Informe o Nome"
             ></input>
             <input
+              onChange={(evento) => setJogadorIdade(evento.target.value)}
               className="mb-2 form-control"
               placeholder="Informe a Idade"
             ></input>
             <input
+              onChange={(evento) => setJogadorTime(evento.target.value)}
               className="mb-2 form-control"
               placeholder="Informe o Time"
             ></input>
-            <button className="btn btn-outline-success mb-4">Cadastrar</button>
+            <button
+              onClick={adicionaJogador}
+              className="btn btn-outline-success mb-4"
+            >
+              Cadastrar
+            </button>
           </span>
           <h5 className="card text-center text-white bg-dark pb-1 mb-5">
             Lista de Jogadores
