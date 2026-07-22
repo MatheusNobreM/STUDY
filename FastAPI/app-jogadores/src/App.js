@@ -1,6 +1,40 @@
+import { useState, useEffect } from "react";
 import "./App.css";
+import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
+  const [jogadorList, setJogadorList] = useState([{}]);
+  const [jogadorNome, setJogadorNome] = useState("");
+  const [jogadorIdade, setJogadorIdade] = useState("");
+  const [jogadorTime, setJogadorTime] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/jogadores")
+      .then((resposta) => {
+        console.log(resposta.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+
+  const adicionaJogador = () => {
+    const jogador = {
+      jogador_name: jogadorNome,
+      jogador_idade: jogadorIdade,
+      jogador_time: jogadorTime,
+    };
+    axios
+      .post("http://127.0.0.1:800/jogadores", jogador)
+      .then((resposta) => {
+        alert(resposta);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <div className="container">
       <div
