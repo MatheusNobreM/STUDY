@@ -15,6 +15,7 @@ function Jogador(props) {
     props.setJogadorNome(jogador.nome);
     props.setJogadorIdade(jogador.idade);
     props.setJogadorTime(jogador.time);
+    props.setTextoBotao("Atualizar");
   };
   return (
     <div>

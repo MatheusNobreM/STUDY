@@ -10,6 +10,7 @@ function App() {
   const [jogadorIdade, setJogadorIdade] = useState("");
   const [jogadorTime, setJogadorTime] = useState("");
   const [jogadorId, setJogadorId] = useState("");
+  const [textoBotao, setTextoBotao] = useState("Cadastrar");
 
   useEffect(() => {
     axios
@@ -94,7 +95,7 @@ function App() {
               onClick={adicionaAtualizaJogador}
               className="btn btn-outline-success mb-4"
             >
-              Cadastrar
+              {textoBotao}
             </button>
           </span>
           <h5 className="card text-center text-white bg-dark pb-1 mb-5">
@@ -107,6 +108,7 @@ function App() {
               setJogadorNome={setJogadorNome}
               setJogadorIdade={setJogadorIdade}
               setJogadorTime={setJogadorTime}
+              setTextoBotao={setTextoBotao}
             ></JogadorList>
           </div>
         </div>
