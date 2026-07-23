@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import JogadorList from "./components/JogadorList";
 
 function App() {
   const [jogadorList, setJogadorList] = useState([{}]);
@@ -12,7 +13,10 @@ function App() {
   useEffect(() => {
     axios
       .get("http://127.0.0.1:8000/jogadores")
-      .then((resposta) => console.log(resposta.data))
+      .then((resposta) => {
+        console.log(resposta.data);
+        setJogadorList(resposta.data);
+      })
       .catch((error) => console.log(error));
   }, []);
 
@@ -73,7 +77,9 @@ function App() {
           <h5 className="card text-center text-white bg-dark pb-1 mb-5">
             Lista de Jogadores
           </h5>
-          <div></div>
+          <div>
+            <JogadorList jogadorList={jogadorList}></JogadorList>
+          </div>
         </div>
         <h6 className="card text-center text-light bg-success py-1">
           &copy; CodeTI - 2026
