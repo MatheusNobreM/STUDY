@@ -9,6 +9,7 @@ function App() {
   const [jogadorNome, setJogadorNome] = useState("");
   const [jogadorIdade, setJogadorIdade] = useState("");
   const [jogadorTime, setJogadorTime] = useState("");
+  const [jogadorId, setJogadorId] = useState("");
 
   useEffect(() => {
     axios
@@ -20,12 +21,18 @@ function App() {
       .catch((error) => console.log(error));
   }, []);
 
-  const adicionaJogador = () => {
-    const jogador = {
-      jogador_nome: jogadorNome,
-      jogador_idade: Number(jogadorIdade),
-      jogador_time: jogadorTime,
-    };
+  const atualizaJogador = (jogador) => {
+    axios
+      .put(`http://127.0.0.1:8000/jogadores/${jogadorId}`, jogador)
+      .then((reposta) => {
+        alert("Jogador atualizado com sucesso");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const adicionaJogador = (jogador) => {
     axios
       .post("http://127.0.0.1:8000/jogadores", jogador)
       .then((resposta) => {
@@ -34,6 +41,19 @@ function App() {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const adicionaAtualizaJogador = () => {
+    const jogador = {
+      jogador_nome: jogadorNome,
+      jogador_idade: Number(jogadorIdade),
+      jogador_time: jogadorTime,
+    };
+    if (jogadorId !== "") {
+      atualizaJogador(jogador);
+    } else {
+      adicionaJogador(jogador);
+    }
   };
   return (
     <div className="container">
@@ -54,21 +74,24 @@ function App() {
           <span className="card-text">
             <input
               onChange={(evento) => setJogadorNome(evento.target.value)}
+              value={jogadorNome}
               className="mb-2 form-control"
               placeholder="Informe o Nome"
             ></input>
             <input
               onChange={(evento) => setJogadorIdade(evento.target.value)}
+              value={jogadorIdade}
               className="mb-2 form-control"
               placeholder="Informe a Idade"
             ></input>
             <input
               onChange={(evento) => setJogadorTime(evento.target.value)}
+              value={jogadorTime}
               className="mb-2 form-control"
               placeholder="Informe o Time"
             ></input>
             <button
-              onClick={adicionaJogador}
+              onClick={adicionaAtualizaJogador}
               className="btn btn-outline-success mb-4"
             >
               Cadastrar
@@ -78,7 +101,13 @@ function App() {
             Lista de Jogadores
           </h5>
           <div>
-            <JogadorList jogadorList={jogadorList}></JogadorList>
+            <JogadorList
+              jogadorList={jogadorList}
+              setJogadorId={setJogadorId}
+              setJogadorNome={setJogadorNome}
+              setJogadorIdade={setJogadorIdade}
+              setJogadorTime={setJogadorTime}
+            ></JogadorList>
           </div>
         </div>
         <h6 className="card text-center text-light bg-success py-1">

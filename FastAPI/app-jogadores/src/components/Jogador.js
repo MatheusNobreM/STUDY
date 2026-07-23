@@ -9,12 +9,25 @@ function Jogador(props) {
         alert("Jogador removido com sucesso" + resposta.data);
       });
   };
+
+  const editarJogador = (jogador) => {
+    props.setJogadorId(jogador.id);
+    props.setJogadorNome(jogador.nome);
+    props.setJogadorIdade(jogador.idade);
+    props.setJogadorTime(jogador.time);
+  };
   return (
     <div>
       <p>
         <span className="fw-bold">
           {props.jogador.nome} - {props.jogador.idade} - {props.jogador.time}
         </span>
+        <button
+          onClick={() => editarJogador(props.jogador)}
+          className="btn btn-sn"
+        >
+          <span className="badge rounded-pill bg-info"> Editar</span>
+        </button>
         <button
           onClick={() => excluijogador(props.jogador.id)}
           className="btn btn-sn"
