@@ -5,7 +5,10 @@ from beanie import init_beanie
 from fastapi import FastAPI
 from pymongo import AsyncMongoClient
 
-from core.config import settings
+from .core.config import settings
+from .models.user_model import User
+
+from .api.api_v1.router import router
 
 
 @asynccontextmanager
@@ -13,7 +16,9 @@ async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
     client = AsyncMongoClient(settings.MONGO_CONNECTION_STRING)
     database = client.todoapp
 
-    await init_beanie(database=database, document_models=[])
+    await init_beanie(database=database, document_models=[User])
+
+    app.include_router(router, prefix=settings.API_V1_STR)
 
     try:
         yield
