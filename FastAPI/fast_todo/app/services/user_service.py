@@ -1,5 +1,6 @@
-from .schemas.user_schemas import UserAuth
-from .models.user_model import User
+from app.schemas.user_schema import UserAuth
+from app.models.user_model import User
+from app.core.security import get_password
 
 
 class UserService:
@@ -8,5 +9,7 @@ class UserService:
         usuario = User(
             username=user.username,
             email=user.email,
-            hash_password=user.password,
+            hash_password=get_password(user.password),
         )
+        await usuario.save()
+        return usuario
