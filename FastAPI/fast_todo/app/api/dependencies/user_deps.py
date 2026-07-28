@@ -1,7 +1,7 @@
-from fastapi.security import OAuth2AuthorizationCodeBearer
+from fastapi.security import OAuth2PasswordBearer
 from app.core.config import settings
 from fastapi import Depends, HTTPException, status
-from models.user_model import User
+from app.models.user_model import User
 from jose import jwt
 from app.schemas.auth_schema import TokenPayload
 from datetime import datetime
@@ -9,7 +9,7 @@ from pydantic import ValidationError
 from app.services.user_service import UserService
 
 
-oauth_reusavel = OAuth2AuthorizationCodeBearer(
+oauth_reusavel = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_STR}/auth/login", scheme_name="JWT"
 )
 
@@ -21,7 +21,7 @@ async def get_current_user(token: str = Depends(oauth_reusavel)) -> User:
         if datetime.fromtimestamp(token_data.exp) < datetime.now():
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                details="Token foi expirado",
+                detail="Token foi expirado",
                 headers={"WWW-Authenticate": "Bearer"},
             )
     except (jwt.JWTError, ValidationError):
@@ -33,7 +33,7 @@ async def get_current_user(token: str = Depends(oauth_reusavel)) -> User:
 
     user = await UserService.get_user_by_id(token_data.sub)
 
-    if not User:
+    if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Não foi possível encontrar o usuário",
