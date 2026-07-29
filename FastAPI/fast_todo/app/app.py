@@ -7,6 +7,7 @@ from pymongo import AsyncMongoClient
 
 from .core.config import settings
 from .models.user_model import User
+from .models.todo_model import Todo
 
 from .api.api_v1.router import router
 
@@ -16,7 +17,7 @@ async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
     client = AsyncMongoClient(settings.MONGO_CONNECTION_STRING)
     database = client.todoapp
 
-    await init_beanie(database=database, document_models=[User])
+    await init_beanie(database=database, document_models=[User, Todo])
 
     app.include_router(router, prefix=settings.API_V1_STR)
 
